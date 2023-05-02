@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+    user-budget:
+        build: ./
+        ports:
+            - "3000:3000"
+        environment:
+            - USER_BUDGET_DB_NAME=${USER_BUDGET_DB_NAME}
+            - USER_BUDGET_DB_USER=${USER_BUDGET_DB_USER}
+            - USER_BUDGET_DB_PASSWORD=${USER_BUDGET_DB_PASSWORD}
+            - DB_HOST=user-db
+        depends_on:
+            - user-db
+
+    user-db:
+        image: mysql:5.7
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_DATABASE=${USER_BUDGET_DB_NAME}
+            - MYSQL_USER=${USER_BUDGET_DB_USER}
+            - MYSQL_PASSWORD=${USER_BUDGET_DB_PASSWORD}
+            - MYSQL_RANDOM_ROOT_PASSWORD=1
+        volumes:
+            - ../mysql-volume:/var/lib/mysql
+
+
